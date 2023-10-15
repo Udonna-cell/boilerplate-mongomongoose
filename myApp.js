@@ -29,25 +29,72 @@ const createAndSavePerson = (done) => {
 };
 
 const createManyPeople = (arrayOfPeople, done) => {
-  done(null /*, data*/);
+  let people = Person.create(arrayOfPeople,(err, data)=>{
+    if (err){
+      console.log(err)
+    }else{
+      console.log("created Document :", data)
+      done(null , data);
+    }
+  })
+  
 };
 
 const findPeopleByName = (personName, done) => {
-  done(null /*, data*/);
+  Person.find({name: personName},(err, data)=>{
+    if(err){
+      console.log(err)
+    }else{
+      console.log(data)
+      done(null , data);
+    }
+  })
 };
 
 const findOneByFood = (food, done) => {
-  done(null /*, data*/);
+  Person.findOne({favoriteFoods: food},(er, data)=>{
+    if (er){
+      console.log(er)
+    }else{
+      console.log(data)
+      done(null , data);
+    }
+  })
 };
 
 const findPersonById = (personId, done) => {
-  done(null /*, data*/);
+  Person.findById({_id: personId},(err, data)=>{
+    if (err){
+      console.log(err)
+    }else{
+      console.log(data)
+      done(null, data)
+    }
+  })
 };
 
 const findEditThenSave = (personId, done) => {
   const foodToAdd = "hamburger";
-
-  done(null /*, data*/);
+  Person.findById({_id: personId},(error, document)=>{
+    if (error){
+      console.log(error)
+    }else{
+      if(document){
+        let newRecord = document
+        newRecord.favoriteFoods.push(foodToAdd)
+        data.update(document, newRecord, (er, data)=>{
+          if(er){
+            console.log(er)
+          }else{
+            console.log("saved!")
+            done(null, data)
+          }
+        })
+      }else{
+        console.log("no data was found")
+      }
+    }
+  })
 };
 
 const findAndUpdate = (personName, done) => {
