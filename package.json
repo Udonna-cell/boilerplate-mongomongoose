@@ -4,7 +4,7 @@
   "description": "A boilerplate project",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
@@ -22,5 +22,8 @@
     "mongoose",
     "express"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
 }
