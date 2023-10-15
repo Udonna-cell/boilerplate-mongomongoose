@@ -79,10 +79,11 @@ const findEditThenSave = (personId, done) => {
     if (error){
       console.log(error)
     }else{
+      console.log(document);
       if(document){
         let newRecord = document
         newRecord.favoriteFoods.push(foodToAdd)
-        data.update(document, newRecord, (er, data)=>{
+        document.save((er, data)=>{
           if(er){
             console.log(er)
           }else{
@@ -99,24 +100,50 @@ const findEditThenSave = (personId, done) => {
 
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
-
-  done(null /*, data*/);
+  Person.findOneAndUpdate({name: personName}, {age: ageToSet}, {new: true}, (err, data)=>{
+    if (err){
+      console.log(err)
+    }else{
+      console.log(data)
+      done(null, data)
+    }
+  })
 };
 
 const removeById = (personId, done) => {
-  done(null /*, data*/);
+  Person.findByIdAndRemove({_id: personId}, (err, data)=>{
+    if(err){
+      console.log(err);
+    }else {
+      console.log(data);
+      done(null, data)
+    }
+  })
 };
 
 const removeManyPeople = (done) => {
   const nameToRemove = "Mary";
-
-  done(null /*, data*/);
+  Person.remove({name: nameToRemove}, (err, data)=>{
+    if(!err){
+      console.log(data);
+      done(null, data)
+    }
+  })
 };
 
 const queryChain = (done) => {
   const foodToSearch = "burrito";
 
-  done(null /*, data*/);
+  Person.find({favoriteFoods: {$all: [foodToSearch]}})
+  .sort({name: "asc"})
+  .limit(2)
+  .select("-age")
+  .exec((err, data)=>{
+    if(!err){
+      console.log(data);
+      done(null, data)
+    }
+  })
 };
 
 /** **Well Done !!**
